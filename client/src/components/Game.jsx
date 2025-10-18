@@ -17,7 +17,6 @@ const Game = ({ socket, playerName, gameId, playerColor, opponentName, onReturnT
   const [chatMessages, setChatMessages] = useState([]);
   const [drawOffered, setDrawOffered] = useState(false);
   const [offeringPlayer, setOfferingPlayer] = useState(null);
-  const [opponentDisconnected, setOpponentDisconnected] = useState(false);
 
   const { playMove, playCapture, playCheck, playGameEnd } = useSoundEffects();
 
@@ -26,10 +25,12 @@ const Game = ({ socket, playerName, gameId, playerColor, opponentName, onReturnT
 
     // Listen for move-made event
     socket.on('move-made', (data) => {
-      game.load(data.fen);
+      const newGame = new Chess();
+      newGame.load(data.fen);
+      setGame(newGame);
       setFen(data.fen);
       setMoveHistory(data.moveHistory);
-      calculateCapturedPieces(game);
+      calculateCapturedPieces(newGame);
 
       // Play appropriate sound
       if (data.isCheck) {
