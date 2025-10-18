@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Chess } from 'chess.js';
+import Chess from 'chess.js';
 import ChessBoard from './ChessBoard';
 import CapturedPieces from './CapturedPieces';
 import Chat from './Chat';
