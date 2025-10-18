@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Chessboard } from 'react-chessboard';
+import Chess from 'chess.js';
 
 const ChessBoard = ({ fen, onMove, playerColor, game }) => {
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -28,7 +29,9 @@ const ChessBoard = ({ fen, onMove, playerColor, game }) => {
           promotion: 'q' // Always promote to queen
         };
 
-        const result = game.move(move);
+        // Validate move without mutating - create temp instance
+        const testGame = new Chess(game.fen());
+        const result = testGame.move(move);
         if (result) {
           onMove(move);
           setSelectedSquare(null);
@@ -91,7 +94,9 @@ const ChessBoard = ({ fen, onMove, playerColor, game }) => {
     };
 
     try {
-      const result = game.move(move);
+      // Validate move without mutating - create temp instance
+      const testGame = new Chess(game.fen());
+      const result = testGame.move(move);
 
       if (result) {
         onMove(move);
